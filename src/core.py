@@ -66,7 +66,7 @@ args = sys.argv
 
 if(check_args_syntax(args) == 1):
     # cifrar la entrada
-    contraseña = getpass.getpass()
+    clave = getpass.getpass()
 else:
     # descifrar la entrada
     print("descifrar la entrada")
