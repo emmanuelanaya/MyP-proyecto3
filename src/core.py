@@ -10,9 +10,11 @@ def msg_uso():
     print("\tssss -c <archivo_claro> n t <archivo_claves> <archivo_cifrado>\n")
     print("\tdonde\t<archivo_claro>\t\tes el texto a cifrar")
     print("\t\tn\t\t\tes el numero de claves a generar (n > 2)")
-    print("\t\tt\t\t\tes el numero de claves necesarias para decifrar (1 < t <= n)")
+    print("\t\tt\t\t\tes el numero de claves necesarias para decifrar"
+          " (1 < t <= n)")
     print("\t\t<archivo_claves>\tes el archivo donde se guardaran las claves")
-    print("\t\t<archivo_cifrado>\tes el archivo donde se guardara el texto cifrado\n\n")
+    print("\t\t<archivo_cifrado>\tes el archivo donde se guardara el texto"
+          " cifrado\n\n")
 
     print("Para descifrar, ejecute\n")
     print("\tssss -d <archivo_cifrado> <archivo_claves>\n")
