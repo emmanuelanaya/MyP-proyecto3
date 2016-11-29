@@ -1,6 +1,7 @@
 from Crypto.Cipher import AES
 from Crypto.Hash import SHA256
 from Crypto.Random import random
+from binascii import unhexlify
 
 P = 208351617316091241234326746312124448251235562226470491514186331217050270460481
 
@@ -74,9 +75,13 @@ def encrypt(claro, nombre, n, t, clave):
     return (cipher_text, points)
 
 
-claro = "Bicycle 808\nThe U.S. Playing Card Co.\nMade in U.S.A"
-nombre = "Bi.txt"
-clave = "password"
-
-t = encrypt(claro, nombre, 5, 3, clave)
-print(t[0])
+def decrypt(c_text, points):
+    safe_key = format(Polinomio.get_ind(points), "x")
+    safe_key = "0" * (64 - len(safe_key)) + safe_key
+    full = AES.new(unhexlify(safe_key)).decrypt(c_text).decode("utf-8")
+    name = full.split("\0")[0]
+    st = full.split("\0")[1]
+    extra = int(st[-1], 16)
+    extra = extra if extra else 16
+    st = st[:-extra]
+    return (name, st)
