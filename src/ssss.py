@@ -17,15 +17,11 @@ def msg_uso():
     print("Implementacion por Emmanuel Anaya")
     
     print("\nPara cifrar, ejecute\n")
-    print("\tssss -c <archivo_claro> n t <archivo_claves> <archivo_cifrado>\n")
+    print("\tssss -c <archivo_claro> n t\n")
     print("\tdonde\t<archivo_claro>\t\tes el texto a cifrar")
     print("\t\tn\t\t\tes el numero de claves a generar (n > 2)")
     print("\t\tt\t\t\tes el numero de claves necesarias para decifrar"
-          " (1 < t <= n)")
-    print("\t\t<archivo_claves>\tes el archivo donde se guardaran las claves"
-          " (sin extension)")
-    print("\t\t<archivo_cifrado>\tes el archivo donde se guardara el texto"
-          " cifrado (sin extension)\n\n")
+          " (1 < t <= n)\n\n")
 
     print("Para descifrar, ejecute\n")
     print("\tssss -d <archivo_cifrado> <archivo_claves>\n")
@@ -33,8 +29,6 @@ def msg_uso():
     print("\t\t<archivo_claves>\tes el archivo con las evaluaciones,"
           " una por linea, de la\n\t\t\t\t\tforma \"x,f(x)\", sin comillas y"
           " sin lineas en blanco\n")
-
-    sys.exit()
 
 
 def pairs_file_syntax(f):
@@ -44,9 +38,8 @@ def pairs_file_syntax(f):
     La sintaxis que debe tener cada linea del archivo con las claves es 'x,f(x)',
     sin comillas, donde x y f(x) son enteros no negativos.
     
-    :param f: el archivo que contiene las claves para desencriptar
-    :type t: file
-    :returns: True si el archivo cumple el formato, False en otro caso
+    @param f el archivo que contiene las claves para desencriptar 
+    @returns True si el archivo cumple el formato, False en otro caso
     """
     
     lines = f.read().splitlines()
@@ -59,7 +52,12 @@ def check_args_syntax(args):
     """ Revisa si los argumentos del programa cumplen la sintaxis requerida.
     
     Revisa si las banderas son correctas, si los archivos existen y si los numeros
-    de claves necesarias y generadas son validos. 
+    de claves necesarias y generadas son validos. De no ser asi, imprime un mensaje
+    de ayuda y termina la ejecucion.
+
+    @param args argumentos que se le proporcionaron al programa
+    @return 1 si los argumentos cumplen con la sintaxis para cifrar un archivo,
+    2 si cumplen con la sintaxis para descifrar un archivo
     """
     
     if len(args) < 2 or (args[1] not in ["-c", "-d"]):
@@ -70,9 +68,9 @@ def check_args_syntax(args):
             open(args[2], "r").close()
             assert(int(args[3]) > 0)
             assert(0 < int(args[4]) <= int(args[3]))
-            f = open(args[5], "w")
+            f = open(os.path.splitext(args[2])[0] + ".aes", "w")
             f.close(); os.remove(f.name);
-            f = open(args[6], "wb")
+            f = open(os.path.splitext(args[2])[0] + ".frg", "wb")
             f.close(); os.remove(f.name);
         except:
             msg_uso()
@@ -100,9 +98,9 @@ if(check_args_syntax(args) == 1):
     n = int(args[3])
     t = int(args[4])
     cifrado = s4cipher.encrypt(claro, name, n, t, clave)
-    with open(args[6] + ".aes", "wb") as out:
+    with open(os.path.splitext(args[2])[0] + ".aes", "wb") as out:
         out.write(cifrado[0])
-    with open(args[5] + ".frg", "w") as out:
+    with open(os.path.splitext(args[2])[0] + ".frg", "w") as out:
         for p in cifrado[1]:
             out.write("{},{}\n".format(p[0], p[1]))
 
