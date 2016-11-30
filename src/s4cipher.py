@@ -2,6 +2,7 @@ from Crypto.Cipher import AES
 from Crypto.Hash import SHA256
 from Crypto.Random import random
 from binascii import unhexlify
+import sys
 
 P = 208351617316091241234326746312124448251235562226470491514186331217050270460481
 
@@ -78,7 +79,11 @@ def encrypt(claro, nombre, n, t, clave):
 def decrypt(c_text, points):
     safe_key = format(Polinomio.get_ind(points), "x")
     safe_key = "0" * (64 - len(safe_key)) + safe_key
-    full = AES.new(unhexlify(safe_key)).decrypt(c_text).decode("utf-8")
+    try:
+        full = AES.new(unhexlify(safe_key)).decrypt(c_text).decode("utf-8")
+    except:
+        print("Claves incorrectas, saliendo...")
+        sys.exit()
     name = full.split("\0")[0]
     st = full.split("\0")[1]
     extra = int(st[-1], 16)
