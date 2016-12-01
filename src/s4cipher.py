@@ -101,8 +101,12 @@ class Polinomio:
         @return la lista con las n evaluaciones del polinomio
         """
         points = []
-        for i in range(n):
+        s = set()
+        for i in range(n): 
             r = random.getrandbits(256)
+            while r in s:
+                r = random.getrandbits(256)
+            s.add(r)
             points.append((r, self.evaluate(r)))
 
         return points
@@ -193,8 +197,9 @@ def decrypt(c_text, points):
     except:
         print("Claves incorrectas, saliendo...")
         sys.exit()
-    name = full.split("\0")[0]
-    st = full.split("\0")[1]
+    fst = full.find("\0")
+    name = full[:fst]
+    st = full[fst+1:]
     extra = int(st[-1], 16)
     extra = extra if extra else 16
     st = st[:-extra]
