@@ -29,6 +29,7 @@ def msg_uso():
     print("\t\t<archivo_claves>\tes el archivo con las evaluaciones,"
           " una por linea, de la\n\t\t\t\t\tforma \"x,f(x)\", sin comillas y"
           " sin lineas en blanco\n")
+    sys.exit()
 
 
 def pairs_file_syntax(f):
